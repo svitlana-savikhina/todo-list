@@ -9,7 +9,7 @@
     <ul class="list-inline">
       {% for task in task_list %}
         <li>
-          <form method="post" action="" style="display: inline;">
+          <form method="post" action="{% url 'tasks:task-change-status' pk=task.id %}" style="display: inline;">
             {% csrf_token %}
             {% if task.is_done %}
               <button type="submit" class="btn btn-secondary link-to-page float-right">Undo</button>
