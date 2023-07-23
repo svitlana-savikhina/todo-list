@@ -34,7 +34,7 @@
           <p>
             Tags: {% for tag in task.tag.all %} {{ tag.name }} {% endfor %}
             <a href="{% url 'tasks:task-update' pk=task.id %}">Update</a>
-            <a href="">Delete</a>
+            <a href="{% url 'index:task-delete' pk=task.id %}">Delete</a>
           </p>
         </li>
         <hr>
