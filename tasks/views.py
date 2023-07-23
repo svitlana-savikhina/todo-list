@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 
 from tasks.forms import TaskForm
-from tasks.models import Task
+from tasks.models import Task, Tag
 
 
 class TodoListView(generic.ListView):
@@ -41,3 +41,7 @@ class TaskChangeStatusView(View):
         task.save()
         return redirect("tasks:index")
 
+
+class TagListView(generic.ListView):
+    model = Tag
+    template_name = "tasks/tag_list.html"
