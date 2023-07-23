@@ -1,11 +1,11 @@
-from django.conf import settings
-from django.conf.urls.static import static
+
 from django.urls import path
 
-from tasks.views import TodoListView
+from tasks.views import TodoListView, TaskCreateView
 
 urlpatterns = [
     path("", TodoListView.as_view(), name="index"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path("tasks/create/", TaskCreateView.as_view(), name="task-create"),
+]
 
 app_name = "tasks"
