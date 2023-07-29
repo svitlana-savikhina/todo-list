@@ -6,10 +6,9 @@ from tasks.models import Task, Tag
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = "__all__"
+        fields = ("content", "deadline_time", "is_done", "tags",)
         widgets = {
-            "tag": forms.CheckboxSelectMultiple(),
-            "created_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "tags": forms.CheckboxSelectMultiple(),
             "deadline_time": forms.DateTimeInput(attrs={"type": "datetime-local"})
         }
 
