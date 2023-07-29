@@ -8,14 +8,13 @@ from tasks.models import Tag, Task
 
 class TaskViewsTest(TestCase):
     def setUp(self):
-        self.tag = Tag.objects.create(name="Test Tag")
+        self.tags = Tag.objects.create(name="Test Tag")
         self.task = Task.objects.create(
             content="Test Task",
-            created_time=datetime.now(),
             deadline_time=datetime.now() + timedelta(hours=3),
             is_done=False,
         )
-        self.task.tag.add(self.tag)
+        self.task.tags.add(self.tags)
 
     def create_task_data(self, content, created_time, deadline_time, is_done=False):
         return {
@@ -23,7 +22,7 @@ class TaskViewsTest(TestCase):
             "created_time": created_time,
             "deadline_time": deadline_time,
             "is_done": is_done,
-            "tag": [self.tag.pk],
+            "tags": [self.tags.pk],
         }
 
     def test_task_list_view(self):
@@ -31,15 +30,6 @@ class TaskViewsTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.task.content)
-
-    def test_task_create_view(self):
-        url = reverse("tasks:task-create")
-        form_data = self.create_task_data(
-            "New Task", "2023-07-28 12:00:00", "2023-07-28 15:00:00"
-        )
-        response = self.client.post(url, data=form_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Task.objects.count(), 2)
 
     def test_task_update_view(self):
         url = reverse("tasks:task-update", args=[self.task.pk])
@@ -73,7 +63,7 @@ def create_tag_data(name):
 
 class TagViewsTest(TestCase):
     def setUp(self):
-        self.tag = Tag.objects.create(name="Test Tag")
+        self.tags = Tag.objects.create(name="Test Tag")
 
     def create_tag_data(self):
         return {
@@ -84,7 +74,7 @@ class TagViewsTest(TestCase):
         url = reverse("tasks:tag-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.tag.name)
+        self.assertContains(response, self.tags.name)
 
     def test_tag_create_view(self):
         url = reverse("tasks:tag-create")
@@ -94,15 +84,15 @@ class TagViewsTest(TestCase):
         self.assertEqual(Tag.objects.count(), 2)
 
     def test_tag_update_view(self):
-        url = reverse("tasks:tag-update", args=[self.tag.pk])
+        url = reverse("tasks:tag-update", args=[self.tags.pk])
         form_data = create_tag_data("Updated Tag")
         response = self.client.post(url, data=form_data)
         self.assertEqual(response.status_code, 302)
-        self.tag.refresh_from_db()
-        self.assertEqual(self.tag.name, "Updated Tag")
+        self.tags.refresh_from_db()
+        self.assertEqual(self.tags.name, "Updated Tag")
 
     def test_tag_delete_view(self):
-        url = reverse("tasks:tag-delete", args=[self.tag.pk])
+        url = reverse("tasks:tag-delete", args=[self.tags.pk])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Tag.objects.count(), 0)

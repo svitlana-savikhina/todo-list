@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 from tasks.forms import TagForm, TaskForm
 from tasks.models import Tag
@@ -12,13 +12,12 @@ class FormsTests(TestCase):
         self.assertEqual(form.cleaned_data, form_data)
 
     def test_task_form_creation(self):
-        tag = Tag.objects.create(name="Test Tag")
+        tags = Tag.objects.create(name="Test Tag")
         form_data = {
             "content": "Test",
-            "created_time": "2023-07-28 12:00:00",
             "deadline_time": "2023-07-28 15:00:00",
             "is_done": False,
-            "tag": [tag.pk],
+            "tags": [tags.pk],
         }
 
         form = TaskForm(data=form_data)

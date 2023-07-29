@@ -11,11 +11,11 @@ class ModelTest(TestCase):
             is_done=False,
             deadline_time="2023-07-13 12:00",
         )
-        tag = Tag.objects.create(name="home")
-        task_.tag.set([tag])
+        tags = Tag.objects.create(name="home")
+        task_.tags.set([tags])
         self.assertEqual(
             str(task_),
-            f"{task_.content} {task_.created_time} {task_.is_done} {task_.deadline_time} {task_.tag}",
+            f"{task_.content} {task_.created_time} {task_.is_done} {task_.deadline_time} {task_.tags}",
         )
 
     def test_tag_str(self):
